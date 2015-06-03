@@ -1,0 +1,5 @@
+- name: Start Octoprint
+  service: name=octoprint enabled=yes state=started
+
+- name: Restart Octoprint
+  service: name=octoprint state=restarted

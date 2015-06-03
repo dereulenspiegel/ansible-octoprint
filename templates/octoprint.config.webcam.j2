@@ -1,0 +1,50 @@
+{% if octoprint_config_webcam is defined %}
+webcam:
+{% if octoprint_config_webcam.stream is defined %}
+  # Use this option to enable display of a webcam stream in the UI, e.g. via MJPG-Streamer.
+  # Webcam support will be disabled if not set
+  stream: {{octoprint_config_webcam.stream}}
+{% endif %}
+
+{% if octoprint_config_webcam.snapshot is defined%}
+  # Use this option to enable timelapse support via snapshot, e.g. via MJPG-Streamer.
+  # Timelapse support will be disabled if not set
+  snapshot: {{octoprint_config_webcam.snapshot}}
+{% endif %}
+
+{% if octoprint_config_webcam.ffmpeg is defined %}
+  # Path to ffmpeg binary to use for creating timelapse recordings.
+  # Timelapse support will be disabled if not set
+  ffmpeg: {{octoprint_config_webcam.ffmpeg}}
+{% endif %}
+
+{% if octoprint_config_webcam.bitrate is defined %}
+  # The bitrate to use for rendering the timelapse video. This gets directly passed to ffmpeg.
+  bitrate: {{octoprint_config_webcam.bitrate}}
+{% else %}
+  bitrate: 5000k
+{% endif %}
+
+{% if octoprint_config_webcam.watermark %}
+  # Whether to include a "created with OctoPrint" watermark in the generated timelapse movies
+  watermark: {{octoprint_config_webcam.watermark}}
+{% else %}
+  watermark: true
+{% endif %}
+
+{% if octoprint_config_webcam.timelapse is defined %}
+  # The default timelapse settings.
+  timelapse:
+
+    # The timelapse type. Can be either "off", "zchange" or "timed". Defaults to "off"
+    type: {{octoprint_config_webcam.timelapse.type}}
+
+{% if octoprint_config_webcam.timelapse.options is defined %}
+    # Additional options depending on the timelapse type. Currently only the "timed" timelapse takes
+    # the interval which to leave between images as option "interval", given in seconds. This example
+    # therefore configures a "Timed" timelapse with an interval of 2s. Defaults to empty.
+    options:
+      interval: {{octoprint_config_webcam.timelapse.options.interval}}
+{% endif %}
+{% endif %}
+{% endif %}

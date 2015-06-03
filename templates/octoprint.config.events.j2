@@ -1,0 +1,13 @@
+{% if octoprint_config_events is defined %}
+events:
+  subscriptions:
+{% for subscription in octoprint_config_events.subscriptions %}
+    # example event consumer that prints a message to the system log if the printer is disconnected
+    - event: {{subscription.event}}
+      command: {{subscription.command}}
+      type: {{subscription.type}}
+{% if subscription.enabled is defined %}
+      enabled: {{subscription.enabled}}
+{% endif %}
+{% endfor %}
+{% endif %}

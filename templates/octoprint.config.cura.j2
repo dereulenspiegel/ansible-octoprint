@@ -1,0 +1,6 @@
+{% if octoprint_config_cura is defined %}
+cura:
+{% for key, value in octoprint_config_cura.iteritems() %}
+  {{key}}: {{value}}
+{% endfor %}
+{% endif %}

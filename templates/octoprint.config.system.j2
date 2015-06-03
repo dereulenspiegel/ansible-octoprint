@@ -1,0 +1,12 @@
+{% if octoprint_config_system is defined %}
+system:
+  actions:
+{% for action in octoprint_config_system.actions %}
+  - name: {{action.name}}
+    action: {{action.action}}
+    command: {{action.command}}
+{% if action.confirm is defined %}
+    confirm: {{action.confirm}}
+{% endif %}
+{% endfor %}
+{% endif %}

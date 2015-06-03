@@ -1,0 +1,77 @@
+- name: Install dependencies for OctoPrint
+  apt: name={{item}} state=latest
+  with_items:
+    - python-pip
+    - python-dev
+    - python-setuptools
+    - python-virtualenv
+    - git
+
+- name: Create OctoPrint user
+  user: name={{octoprint_user}} append=yes groups=dialout,tty,staff
+
+- name: Create octoprint config dir
+  file: path=/home/{{octoprint_user}}/.octoprint state=directory owner="{{octoprint_user}}"
+
+- name: Install octoprint config
+  template: src=octoprint.config.j2 dest="/home/{{octoprint_user}}/.octoprint/config.yaml" owner="{{octoprint_user}}" group="{{octoprint_group}}"
+  notify: Restart Octoprint
+
+- name: Install octoprint udev rules
+  when: octoprint_udev_attrs is defined
+  template: src=50-3dprinter.rules.j2 dest=/etc/udev/rules.d/50-3dprinter.rules
+
+- name: Clone Octoprint release
+  register: octocloned
+  git: repo={{octoprint_repo}} dest={{octoprint_installDir}} version={{octoprint_version}}
+
+- name: Setup OctoPrint
+  when: octocloned|changed
+  shell: python setup.py install
+  args:
+    chdir: "{{ octoprint_installDir }}"
+
+- name: Set ownership of octoprint install octoprint_install_dir
+  file: path="{{octoprint_installDir}}" recurse=yes owner="{{octoprint_user}}"
+
+- name: Set ownership of octoprint deamon
+  file: path=/usr/local/bin/octoprint owner="{{octoprint_user}}"
+
+- name: Setup Octoprint defaults
+  template: src=octoprint.defaults.j2 dest=/etc/default/octoprint owner="{{octoprint_user}}"
+  notify: Restart Octoprint
+
+- name: Setup Octoprint init script
+  template: src=octoprint.init.j2  dest=/etc/init.d/octoprint mode=0755
+  notify: Start Octoprint
+
+- name: Install tools to compile for arduino and flash arduinos
+  when: octoprint_flash
+  apt: name={{item}} state=latest
+  with_items:
+    - arduino-mk
+    - avrdude
+
+- name: Create directory for Marlin firmware
+  when: octoprint_flash
+  file: dest={{octoprint_marlin_folder}} state=directory owner={{octoprint_user}} group=adm mode=0770
+
+- name: Clone Marlin firmware with my Configuration
+  when: octoprint_flash
+  register: marlincloned
+  git: repo={{octoprint_marlin_repo}} dest={{octoprint_marlin_folder}} version={{octoprint_marlin_repo_branch}}
+
+- name: Create convenient command to flash firmware
+  when: octoprint_flash
+  copy:
+    dest: /usr/bin/flash_ramps
+    mode: 0770
+    owner: root
+    group: adm
+    content: "{{flash_script}}"
+
+- name: Compile current version of Marlin
+  when: marlincloned|changed
+  shell: make clean && make
+  args:
+    chdir: "{{octoprint_marlin_folder}}/Marlin"

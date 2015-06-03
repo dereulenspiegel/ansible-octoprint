@@ -1,0 +1,6 @@
+{% if octoprint_config_feature is defined %}
+feature:
+{% for key, value in octoprint_config_feature.iteritems() %}
+  {{key}}: {{value}}
+{% endfor %}
+{% endif %}

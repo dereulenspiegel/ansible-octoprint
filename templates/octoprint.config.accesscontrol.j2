@@ -1,0 +1,45 @@
+{% if octoprint_config_accessControl is defined %}
+accessControl:
+  # whether to enable access control or not. Defaults to true
+  enabled: true
+
+  # The user manager implementation to use for accessing user information. Currently only a filebased
+  # user manager is implemented which stores configured accounts in a YAML file (Default: users.yaml 
+  # in the default configuration folder, see below)
+{% if octoprint_config_accessControl.userManager is defined %}
+  userManager: {{octoprint_config_accessControl.userManager}}
+{% else %}
+  userManager: octoprint.users.FilebasedUserManager
+{% endif %}
+
+{% if octoprint_config_accessControl.userFile is defined %}
+  # The YAML user file to use. If left out defaults to users.yaml in the default configuration folder.
+  userFile: {{octoprint_config_accessControl.userFile}}
+{% endif %}
+
+{% if octoprint_config_accessControl.autologinLocal is defined %}
+  # If set to true, will automatically log on clients originating from any of the networks defined in
+  # "localNetworks" as the user defined in "autologinAs". Defaults to false.
+  autologinLocal: {{octoprint_config_accessControl.autologinLocal}}
+
+  # The name of the user to automatically log on clients originating from "localNetworks" as. Must
+  # be the name of one of your configured users.
+  autologinAs: {{octoprint_config_accessControl.autologinAs}}
+{% endif %}
+
+{% if octoprint_config_accessControl.localNetworks is defined %}
+  # A list of networks or IPs for which an automatic logon as the user defined in "autologinAs" will 
+  # take place. If available OctoPrint will evaluate the "X-Forwarded-For" HTTP header for determining 
+  # the client's IP address (see https://code.google.com/p/haproxy-docs/wiki/forwardfor on how to
+  # configure the sending of this header in HAProxy). Defaults to 127.0.0.0/8 (so basically anything      
+  # originating from localhost).
+  localNetworks:
+{% for network in octoprint_config_accessControl.localNetworks %}
+  - {{network}}
+{% endfor %}
+{% endif %}
+{% else %}
+accessControl:
+  # whether to enable access control or not. Defaults to true
+  enabled: false
+{% endif %}

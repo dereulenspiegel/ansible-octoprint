@@ -1,0 +1,39 @@
+octoprint_version: 1.1.2
+octoprint_user: octoprint
+octoprint_group: octoprint
+octoprint_installDir: "/opt/octoprint"
+octoprint_repo: "https://github.com/foosel/OctoPrint.git"
+octoprint_udev_symlink: reprap
+octoprint_config_api:
+  enabled: true
+octoprint_config_server_host: 0.0.0.0
+octoprint_config_server_port: 5000
+octoprint_config_server_baseUrl: /
+octoprint_config_server_scheme: http
+octoprint_config_server_firstRun: false
+octoprint_config_printerParameters:
+  movementSpeed:
+    x: 6000
+    y: 6000
+    z: 200
+    e: 300
+octoprint_config_serial:
+  port: /dev/ttyACM0
+  baudrate: 115200
+  autoconnect: true
+  log: false
+octoprint_config_serial_timeout:
+  detection: 0.5
+  connection: 2
+  communication: 5
+
+octoprint_marlin_folder: /opt/marlin
+flash_script: |
+  #!/bin/bash
+  PORT=$1
+  FIRMWARE=$2
+  if [ ! -f $FIRMWARE ]; then
+    echo "Error can't read from firmware file ${FIRMWARE}"
+    exit 1
+  fi
+  /usr/bin/avrdude -C/etc/avrdude.conf -v -v -v -v -patmega2560 -cwiring -P${PORT} -b115200 -D -Uflash:w:${FIRMWARE}:i

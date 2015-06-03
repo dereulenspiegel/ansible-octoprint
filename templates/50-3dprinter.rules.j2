@@ -1,0 +1,1 @@
+ACTION=="add", SUBSYSTEMS=="usb", {% for key,attr in octoprint_udev_attrs.iteritems() %}ATTRS{{'{'}}{{key}}{{'}'}}=="{{attr}}", {% endfor %} SYMLINK+="{{octoprint_udev_symlink}}"

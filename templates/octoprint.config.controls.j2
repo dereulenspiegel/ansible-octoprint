@@ -1,0 +1,35 @@
+{% if octoprint_config_controls is defined %}
+controls:
+{% for item in octoprint_config_controls %}
+  - name: {{item.name}}
+    type: {{item.type}}
+    children:
+{% for children in item.children.iteritems() %}
+      - name: {{children.name}}
+        type: {{children.type}}
+{% if children.command is defined %}
+        command: {{children.command}}
+{% endif %}
+{% if children.regex %}
+        regex: {{children.regex}}
+{% endif %}
+{% if children.template is defined %}
+        template: {{children.template}}
+{% endif %}
+{% if children.commands is defined %}
+        commands:
+{% for command in children.commands %}
+        - {{command}}
+{% endfor %}
+{% endif %}
+{% if children.input is defined %}
+        input:
+{% for input in children.input %}
+          - name: {{children.input}}
+            parameter: {{children.parameter}}
+            default: {{children.default}}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% endif %}

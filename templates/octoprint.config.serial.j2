@@ -1,0 +1,37 @@
+serial:
+  # Use the following option to define the default serial port, defaults to unset (= AUTO)
+  port: {{octoprint_config_serial.port}}
+
+  # Use the following option to define the default baudrate, defaults to unset (= AUTO)
+  baudrate: {{octoprint_config_serial.baudrate}}
+
+  # Whether to automatically connect to the printer on server startup (if available)
+  autoconnect: {{octoprint_config_serial.autoconnect}}
+
+  # Whether to log whole communication to serial.log (warning: might decrease performance)
+  log: {{octoprint_config_serial.log}}
+
+  # Timeouts used for the serial connection to the printer, you might want to adjust these if you are
+  # experiencing connection problems
+  timeout:
+
+    # Timeout for waiting for a response from the currently tested port during autodetect, in seconds.
+    # Defaults to 0.5 sec
+    detection: {{octoprint_config_serial_timeout.detection}}
+
+    # Timeout for waiting to establish a connection with the selected port, in seconds.
+    # Defaults to 2 sec
+    connection: {{octoprint_config_serial_timeout.connection}}
+
+    # Timeout during serial communication, in seconds.
+    # Defaults to 5 sec
+    communication: {{octoprint_config_serial_timeout.communication}}
+
+  # Use this to define additional patterns to consider for serial port listing. Must be a valid
+  # "glob" pattern (see http://docs.python.org/2/library/glob.html). Defaults to not set.
+{% if octoprint_config_serial.additionalPorts is defined %}
+  additionalPorts:
+{% for port in octoprint_config_serial.additionalPorts %}
+  - {{port}}
+{% endfor %}
+{% endif %}

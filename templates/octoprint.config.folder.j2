@@ -1,0 +1,30 @@
+{% if octoprint_config_folder is defined %}
+folder:
+{% if octoprint_config_folder.uploads is defined %}
+  # Absolute path where to store gcode uploads. Defaults to the uploads folder in the OctoPrint settings folder
+  uploads: {{octoprint_config_folder.uploads}}
+{% endif %}
+
+{% if octoprint_config_folder.timelapse is defined %}
+  # Absolute path where to store finished timelapse recordings. Defaults to the timelapse folder in the OctoPrint
+  # settings dir
+  timelapse: {{octoprint_config_folder.timelapse}}
+{% endif %}
+
+{% if octoprint_config_folder.timelapse_tmp is defined %}
+  # Absolute path where to store temporary timelapse files. Defaults to the timelapse/tmp folder in the OctoPrint
+  # settings dir
+  timelapse_tmp: {{octoprint_config_folder.timelapse_tmp}}
+{% endif %}
+
+{% if octoprint_config_folder.logs is defined %}
+  # Absolute path where to store log files. Defaults to the logs folder in the OctoPrint settings dir
+  logs: {{octoprint_config_folder.logs}}
+{% endif %}
+
+{% if octoprint_config_folder.virtualSd is defined %}
+  # Absolute path to the virtual printer's simulated SD card. Only useful for development, just ignore
+  # it otherwise
+  virtualSd: {{octoprint_config_folder.virtualSd}}
+{% endif %}
+{% endif %}

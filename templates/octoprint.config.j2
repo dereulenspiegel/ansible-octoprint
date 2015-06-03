@@ -1,0 +1,44 @@
+{% if octoprint_config_api is defined %}
+api:
+{% if octoprint_config_api.key is defined %}
+  key: {{octoprint_config_api.key}}
+  enabled: true
+{% elif octoprint_config_api.enabled is defined %}
+  enabled: {{octoprint_config_api.enabled}}
+{% endif %}
+{% endif %}
+  
+server:
+  host: {{octoprint_config_server_host}}
+  port: {{octoprint_config_server_port}}
+  baseUrl: {{octoprint_config_server_baseUrl}}
+  scheme: {{octoprint_config_server_scheme}}
+  firstRun: {{octoprint_config_server_firstRun}}
+
+printerParameters:
+  movementSpeed:
+    x: {{octoprint_config_printerParameters.movementSpeed.x}}
+    y: {{octoprint_config_printerParameters.movementSpeed.y}}
+    z: {{octoprint_config_printerParameters.movementSpeed.z}}
+    e: {{octoprint_config_printerParameters.movementSpeed.e}}
+
+{% include "octoprint.config.serial.j2" %}
+{% include "octoprint.config.system.j2" %}
+{% include "octoprint.config.temperature.j2" %}
+{% include "octoprint.config.webcam.j2" %}
+{% include "octoprint.config.accesscontrol.j2" %}
+{% include "octoprint.config.cura.j2" %}
+{% include "octoprint.config.feature.j2" %}
+{% include "octoprint.config.gcodeviewer.j2" %}
+{% include "octoprint.config.controls.j2" %}
+{% include "octoprint.config.folder.j2" %}
+{% include "octoprint.config.events.j2" %}
+{% include "octoprint.config.terminalfilters.j2" %}
+
+{% if octoprint_config_appearance is defined %}
+appearance:
+  name: {{octoprint_config_appearance.name}}
+{% if octoprint_config_appearance.color is defined %}
+  color: {{octoprint_config_appearance.color}}
+{% endif %}
+{% endif %}

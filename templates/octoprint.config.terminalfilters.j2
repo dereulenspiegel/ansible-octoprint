@@ -1,0 +1,8 @@
+{% if octoprint_config_terminalFilters is defined %}
+# A list of filters to display in the terminal tab. Defaults to the filters shown below
+terminalFilters:
+{% for filter in octoprint_config_terminalFilters %}
+- name: {{filter.name}}
+  regex: {{filter.regex}}
+{% endfor %}
+{% endif %}
