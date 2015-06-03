@@ -8,6 +8,7 @@ Besides octoprint this role can also take of installing necessary tools to compi
 
 ## Role variables
 This role can be configured in many ways. Basically all options in the octoprint config can be set via variables
+
 Name | Default | Description
 -----|---------|------------
 octoprint_version | 1.1.2 | What octoprint version to checkout. This should be a branch or tag name.
