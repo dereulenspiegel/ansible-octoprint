@@ -27,3 +27,10 @@ octoprint_config_server_scheme | http | Wether Octoprint should use http or http
 octoprint_config_server_firstRun | false | Show the first run wizard
 octoprint_marlin_folder | /opt/marlin | To which folder checkout your printers firmware (if enabled)
 octoprint_config_printerParameters | Yaml object movementSpeed with childs x,y,z,e | Configuration of your printer
+
+### Optionals
+
+Name | Description
+-----|------------
+octoprint_udev_attrs | Key value of udev attrs and values to identify your printer and create a symlink
+octoprint_config_accessControl | Configures the access control section in your Octoprint config
